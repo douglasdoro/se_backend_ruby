@@ -1,19 +1,21 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-ruby "3.2.2"
+source 'https://rubygems.org'
 
-gem "rails", "~> 7.1.3", ">= 7.1.3.4"
-gem "pg", "~> 1.1"
-gem "puma", ">= 5.0"
+ruby '3.2.2'
+
+gem 'pg', '~> 1.1'
+gem 'puma', '>= 5.0'
+gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 # gem "redis", ">= 4.0.1"
 # gem "kredis"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
+gem 'tzinfo-data', platforms: %i[windows jruby]
 # gem "rack-cors"
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ]
+  gem 'debug', platforms: %i[mri windows]
 
   gem 'database_cleaner-active_record'
 
