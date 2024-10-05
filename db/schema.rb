@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_05_121942) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_05_184049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,4 +22,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_05_121942) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "publications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.datetime "published_at"
+    t.datetime "deleted_at"
+    t.integer "status", default: 0, null: false
+    t.uuid "author_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_publications_on_author_id"
+  end
+
+  add_foreign_key "publications", "authors"
 end

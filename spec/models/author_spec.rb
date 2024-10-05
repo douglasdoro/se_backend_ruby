@@ -8,6 +8,10 @@ RSpec.describe Author do
     it { is_expected.to validate_presence_of(:email) }
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:publications).dependent(:destroy) }
+  end
+
   describe '.create' do
     context 'when successes' do
       let(:expected_author) { build_stubbed(:author) }
