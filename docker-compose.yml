@@ -28,6 +28,22 @@ services:
       - se_backend
     depends_on:
       - postgresql
+  
+  test:
+    build:
+      context: .
+    environment:
+      - RAILS_ENV=test
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOSTNAME=postgresql
+      - POSTGRES_PORT=5432
+    volumes:
+      - ./:/rails
+    networks:
+      - se_backend
+    depends_on:
+      - postgresql
 
 networks:
   se_backend:

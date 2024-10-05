@@ -63,4 +63,12 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Allow requests
+  config.hosts = [
+    IPAddr.new('0.0.0.0/0'),
+    'localhost',
+    'example.com',
+    /.*\.example\.com/
+  ]
 end
