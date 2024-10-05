@@ -1,24 +1,28 @@
-# README
+# S.E API Backend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Como rodar
 
-Things you may want to cover:
+## Docker 
+```bash
+# Iniciar a applicação
+docker-compose up
+# Verifique se a aplicação está rodando em http://localhost:3000/up
 
-* Ruby version
+# Rodar migrações
+docker-compose exec api bin/rails db:migrate
 
-* System dependencies
+# Rodar linter
+docker-compose exec api bin/rubocop
 
-* Configuration
+# Rodar os testes
+docker-compose exec api bin/rspec
 
-* Database creation
+# Rodar Seeds
+docker-compose exec api bin/rails db:seed
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Localmente
+```bash
+# Run API
+POSTGRES_USERNAME=postgres POSTGRES_PASSWORD=password POSTGRES_HOSTNAME=localhost POSTGRES_PORT=5432 bin/rails s
+```
