@@ -13,6 +13,8 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'bootsnap', require: false
 gem 'rack-cors'
+gem 'rswag-api'
+gem 'rswag-ui'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :development, :test do

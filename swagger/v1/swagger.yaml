@@ -1,0 +1,45 @@
+---
+openapi: 3.0.1
+info:
+  title: SE API Back-end
+  version: v1
+paths:
+  "/v1/authors":
+    get:
+      summary: list Authors
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: no authors found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        email:
+                          type: string
+                      required:
+                      - id
+                      - name
+                      - email
+                  meta:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

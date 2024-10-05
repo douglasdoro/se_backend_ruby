@@ -15,7 +15,7 @@ docker-compose exec api bin/rails db:migrate
 docker-compose exec api bin/rubocop
 
 # Rodar os testes
-docker-compose exec api bin/rspec
+docker-compose exec test bin/rspec
 
 # Rodar Seeds
 docker-compose exec api bin/rails db:seed

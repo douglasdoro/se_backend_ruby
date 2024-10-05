@@ -32,6 +32,7 @@ services:
   test:
     build:
       context: .
+    entrypoint: ["tail", "-f", "/dev/null"]
     environment:
       - RAILS_ENV=test
       - POSTGRES_USERNAME=postgres
