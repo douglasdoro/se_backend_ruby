@@ -7,7 +7,7 @@ class V1::PublicationsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    publications = Publication.includes(:author).where(status: Publication.status(:published))
+    publications = Publication.includes(:author).where(status: Publication.status(:published)).then(&paginate)
 
     render_publications(publications, :ok)
   end
@@ -78,20 +78,10 @@ class V1::PublicationsController < ApplicationController
 
   def render_publications(publications, status)
     render json: PublicationSerializer.render(
-      publications.then(&paginate),
+      publications,
       root: :publications,
       view: :with_author_name,
       meta: meta(publications)
     ), status:
-  end
-
-  def meta(publications)
-    {
-      # Converted to array do not query again
-      count: publications.to_a.count.to_s,
-      page: params[:page],
-      per_page: params[:per_page]
-
-    }
   end
 end

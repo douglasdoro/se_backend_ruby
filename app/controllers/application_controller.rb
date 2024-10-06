@@ -25,4 +25,14 @@ class ApplicationController < ActionController::API
     }
     render json: ErrorSerializer.render(error_response, root: :error), status:
   end
+
+  def meta(collection)
+    {
+      # Converted to array do not query again
+      count: collection&.to_a&.count&.to_s,
+      page: params[:page],
+      per_page: params[:per_page]
+
+    }
+  end
 end
