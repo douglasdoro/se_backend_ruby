@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.1
 info:
-  title: SE API Back-end
+  title: SE API Backend
   version: v1
 paths:
   "/v1/authors":
@@ -38,6 +38,133 @@ paths:
                     properties:
                       count:
                         type: integer
+  "/v1/publications":
+    get:
+      summary: Retrieves a list of published publications
+      tags:
+      - Publications
+      responses:
+        '200':
+          description: publications found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        body:
+                          type: string
+                        author:
+                          type: string
+    post:
+      summary: Creates a new publication
+      tags:
+      - Publications
+      parameters: []
+      responses:
+        '201':
+          description: publication created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publication:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    author_id:
+                      type: integer
+                  required:
+                  - title
+                  - body
+                  - author_id
+  "/v1/publications/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Retrieves a specific publication
+      tags:
+      - Publications
+      responses:
+        '200':
+          description: publication found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publication:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      author:
+                        type: string
+        '404':
+          description: publication not found
+    put:
+      summary: Updates a specific publication
+      tags:
+      - Publications
+      parameters: []
+      responses:
+        '200':
+          description: publication updated
+        '422':
+          description: invalid request
+        '404':
+          description: publication not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publication:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    author_id:
+                      type: string
+                  required:
+                  - title
+                  - body
+                  - author_id
+    delete:
+      summary: Soft deletes a specific publication
+      tags:
+      - Publications
+      responses:
+        '204':
+          description: publication deleted
 servers:
 - url: http://{defaultHost}
   variables:
