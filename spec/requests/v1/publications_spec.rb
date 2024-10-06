@@ -91,4 +91,25 @@ RSpec.describe 'V1::PublicationsController' do
       expect(publication.deleted_at).not_to be_nil
     end
   end
+
+  describe 'GET /v1/authors/:author_id/publications' do
+    context 'when the author exists' do
+      it 'returns the list of published publications for the author' do
+        get publications_v1_author_path(author.id)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.parsed_body['publications']).not_to be_empty
+        expect(response.parsed_body['publications'].first['author']).to eq(author.name)
+      end
+    end
+
+    context 'when the author does not exist' do
+      it 'returns a 404 status' do
+        get publications_v1_author_path(-1)
+
+        expect(response).to have_http_status(:not_found)
+        expect(response.parsed_body['error']['message']).to eq('Not found')
+      end
+    end
+  end
 end

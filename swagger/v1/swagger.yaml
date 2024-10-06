@@ -37,7 +37,11 @@ paths:
                     type: object
                     properties:
                       count:
-                        type: integer
+                        type: string
+                      per_page:
+                        type: string
+                      page:
+                        type: string
   "/v1/publications":
     get:
       summary: Retrieves a list of published publications
@@ -88,7 +92,7 @@ paths:
                     body:
                       type: string
                     author_id:
-                      type: integer
+                      type: string
                   required:
                   - title
                   - body
@@ -165,6 +169,41 @@ paths:
       responses:
         '204':
           description: publication deleted
+  "/v1/authors/{author_id}/publications":
+    parameters:
+    - name: author_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Retrieves all published publications for a specific author
+      tags:
+      - Publications
+      responses:
+        '200':
+          description: author publications found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        body:
+                          type: string
+                        author:
+                          name:
+                            type: string
+        '404':
+          description: author not found
 servers:
 - url: http://{defaultHost}
   variables:

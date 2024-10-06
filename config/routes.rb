@@ -5,12 +5,14 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
 
   namespace :v1 do
-    get 'authors', to: 'authors#index'
+    resources :authors, only: %i[index] do
+      get 'publications', to: 'publications#index_for_author', on: :member
+    end
 
     resources :publications
   end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  root 'authors#index'
+  root 'v1/publications#index'
 end

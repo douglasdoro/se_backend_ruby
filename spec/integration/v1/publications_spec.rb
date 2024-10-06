@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'V1::PublicationsController' do
+RSpec.describe 'V1::PublicationsController' do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:author) { create(:author) }
   let!(:publication) { create(:publication, :published, author:) }
   let(:publication_params) { { publication: { title: 'New Title', body: 'New Body', author_id: author.id } } }
@@ -48,7 +48,7 @@ RSpec.describe 'V1::PublicationsController' do
             properties: {
               title: { type: :string },
               body: { type: :string },
-              author_id: { type: :integer }
+              author_id: { type: :string }
             },
             required: %w[title body author_id]
           }
@@ -73,10 +73,6 @@ RSpec.describe 'V1::PublicationsController' do
     parameter name: :id, in: :path, type: :string
 
     let(:pub) { create(:publication, :published, author:) }
-
-    # before do
-    #   create_list(:publication, 5, :published)
-    # end
 
     get 'Retrieves a specific publication' do
       tags 'Publications'
@@ -153,6 +149,44 @@ RSpec.describe 'V1::PublicationsController' do
 
       response '204', 'publication deleted' do
         let(:id) { publication.id }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/v1/authors/{author_id}/publications' do
+    parameter name: :author_id, in: :path, type: :string
+
+    get 'Retrieves all published publications for a specific author' do
+      tags 'Publications'
+      produces 'application/json'
+
+      response '200', 'author publications found' do
+        schema type: :object,
+               properties: {
+                 publications: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :string },
+                       title: { type: :string },
+                       body: { type: :string },
+                       author: { name: { type: :string } }
+
+                     }
+                   }
+                 }
+               }
+
+        let(:author_id) { author.id }
+
+        run_test!
+      end
+
+      response '404', 'author not found' do
+        let(:author_id) { -1 }
 
         run_test!
       end

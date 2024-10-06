@@ -2,12 +2,20 @@
 
 class V1::PublicationsController < ApplicationController
   before_action :set_publication, only: %i[show destroy]
-  before_action :set_author, only: %i[create]
+  before_action :set_author, only: %i[create index_for_author]
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
     publications = Publication.includes(:author).where(status: Publication.status(:published)).then(&paginate)
+
+    render_publications(publications, :ok)
+  end
+
+  # Thinking RESTful
+  # GET /authors/:author_id/publications
+  def index_for_author
+    publications = @author.publications.where(status: Publication.status(:published)).then(&paginate)
 
     render_publications(publications, :ok)
   end
@@ -69,6 +77,8 @@ class V1::PublicationsController < ApplicationController
   end
 
   def set_author
+    return @author = Author.find(params[:id]) if params[:action] == 'index_for_author'
+
     @author = Author.find(params[:publication][:author_id])
   end
 
