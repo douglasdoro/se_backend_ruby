@@ -65,14 +65,12 @@ class V1::PublicationsController < ApplicationController
   end
 
   def destroy
-    @publication.status = Publication.status(:deleted)
-    @publication.deleted_at = DateTime.now
-    @publication.published_at = nil
+    @publication = ProcessPublicationStatus.new(@publication, :deleted).call
 
     if @publication.save
       render status: :no_content
     else
-      render_error('not updated', :unprocessable_entity, @publication)
+      render_error('not deleted', :unprocessable_entity, @publication)
     end
   end
 
