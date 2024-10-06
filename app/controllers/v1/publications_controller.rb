@@ -8,7 +8,7 @@ class V1::PublicationsController < ApplicationController
 
   def index
     publications = Publication.includes(:author)
-                              .where(status: Publication.status(:published))
+                              .published
                               .order(published_at: sort_order)
                               .then(&paginate)
 
@@ -19,7 +19,7 @@ class V1::PublicationsController < ApplicationController
   # GET /authors/:author_id/publications
   def index_for_author
     publications = @author.publications
-                          .where(status: Publication.status(:published))
+                          .published
                           .order(published_at: sort_order)
                           .then(&paginate)
 
@@ -89,7 +89,7 @@ class V1::PublicationsController < ApplicationController
   end
 
   def publication_params
-    params.require(:publication).permit(:title, :body, :author_id)
+    params.require(:publication).permit(:title, :body, :status, :author_id)
   end
 
   def render_publications(publications, status)
