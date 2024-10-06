@@ -10,6 +10,7 @@ class UpdatePublication
     find_publication
     process_status
     assign_attributes
+    update_cache
 
     [@publication.save, @publication]
   end
@@ -31,5 +32,9 @@ class UpdatePublication
 
   def assign_attributes
     @publication.assign_attributes(@publication_params)
+  end
+
+  def update_cache
+    Rails.cache.delete("publication/#{@publication.id}")
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class V1::PublicationsController < ApplicationController
-  before_action :set_publication, only: %i[show destroy]
+  before_action :set_publication, only: %i[destroy]
   before_action :set_author, only: %i[create index_for_author]
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -27,8 +27,12 @@ class V1::PublicationsController < ApplicationController
   end
 
   def show
+    publication = Rails.cache.fetch("publication/#{params[:id]}", expires_in: 5.minutes) do
+      Publication.includes(:author).find(params[:id])
+    end
+
     render json: PublicationSerializer.render(
-      @publication,
+      publication,
       root: :publication,
       view: :with_author_name
     ), status: :ok
