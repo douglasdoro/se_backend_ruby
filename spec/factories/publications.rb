@@ -19,7 +19,7 @@ FactoryBot.define do
 
     trait :deleted do
       status { Publication.statuses['deleted'] }
-      published_at { DateTime.now }
+      deleted_at { DateTime.now }
     end
   end
 end

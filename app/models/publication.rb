@@ -12,4 +12,8 @@ class Publication < ApplicationRecord
   validates :title, presence: true, length: { in: 3..40 }
   validates :body, presence: true
   validates :status, inclusion: { in: statuses.keys }
+
+  def self.status(status_key)
+    statuses[status_key]
+  end
 end
