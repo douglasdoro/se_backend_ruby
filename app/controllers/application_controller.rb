@@ -35,4 +35,8 @@ class ApplicationController < ActionController::API
 
     }
   end
+
+  def sort_order
+    params[:sort] == 'asc' ? :asc : :desc
+  end
 end

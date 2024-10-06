@@ -7,7 +7,10 @@ class V1::PublicationsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    publications = Publication.includes(:author).where(status: Publication.status(:published)).then(&paginate)
+    publications = Publication.includes(:author)
+                              .where(status: Publication.status(:published))
+                              .order(published_at: sort_order)
+                              .then(&paginate)
 
     render_publications(publications, :ok)
   end
@@ -15,7 +18,10 @@ class V1::PublicationsController < ApplicationController
   # Thinking RESTful
   # GET /authors/:author_id/publications
   def index_for_author
-    publications = @author.publications.where(status: Publication.status(:published)).then(&paginate)
+    publications = @author.publications
+                          .where(status: Publication.status(:published))
+                          .order(published_at: sort_order)
+                          .then(&paginate)
 
     render_publications(publications, :ok)
   end

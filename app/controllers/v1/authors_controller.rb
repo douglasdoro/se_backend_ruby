@@ -2,7 +2,7 @@
 
 class V1::AuthorsController < ApplicationController
   def index
-    authors = Author.all.then(&paginate)
+    authors = Author.order(created_at: sort_order).then(&paginate)
     render_authors(authors, :ok)
   end
 
