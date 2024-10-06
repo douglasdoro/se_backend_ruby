@@ -48,26 +48,17 @@ class V1::PublicationsController < ApplicationController
     end
   end
 
-  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @publication = Publication.find_by(id: params[:id], author_id: params[:publication][:author_id])
+  def update
+    save, publication = UpdatePublication.new(params[:id], publication_params).save
 
-    raise ActiveRecord::RecordNotFound if @publication.nil?
-
-    if publication_params[:status]
-      @publication = ProcessPublicationStatus.new(@publication,
-                                                  publication_params[:status]).call
-    end
-
-    @publication.assign_attributes(publication_params)
-
-    if @publication.save
+    if save
       render json: PublicationSerializer.render(
-        @publication,
+        publication,
         root: :publication,
         view: :with_author_name
       ), status: :ok
     else
-      render_error('not updated', :unprocessable_entity, @publication)
+      render_error('not updated', :unprocessable_entity, publication)
     end
   end
 
