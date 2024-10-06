@@ -25,7 +25,9 @@ RSpec.describe '/v1/authors' do
           meta: {
             type: :object,
             properties: {
-              count: { type: :integer }
+              count: { type: :string },
+              per_page: { type: :string },
+              page: { type: :string }
             }
           }
         }
@@ -41,7 +43,9 @@ RSpec.describe '/v1/authors' do
           meta: {
             type: :object,
             properties: {
-              count: { type: :integer }
+              count: { type: :string },
+              per_page: { type: :string },
+              page: { type: :string }
             }
           }
         }

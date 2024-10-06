@@ -30,8 +30,8 @@ class ApplicationController < ActionController::API
     {
       # Converted to array do not query again
       count: collection&.to_a&.count&.to_s,
-      page: params[:page],
-      per_page: params[:per_page]
+      page: params[:page] || '0',
+      per_page: params[:per_page] || '0'
 
     }
   end

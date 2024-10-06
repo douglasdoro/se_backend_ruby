@@ -2,7 +2,18 @@
 
 class V1::AuthorsController < ApplicationController
   def index
-    @authors = Author.all
-    render json: AuthorSerializer.render(@authors, root: :authors), status: :ok
+    authors = Author.all.then(&paginate)
+    render_authors(authors, :ok)
+  end
+
+  private
+
+  def render_authors(authors, status)
+    render json: AuthorSerializer.render(
+      authors,
+      root: :authors,
+      view: :default,
+      meta: meta(authors)
+    ), status:
   end
 end
