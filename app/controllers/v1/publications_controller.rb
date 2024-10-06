@@ -9,11 +9,7 @@ class V1::PublicationsController < ApplicationController
   def index
     publications = Publication.includes(:author).where(status: Publication.status(:published))
 
-    render json: PublicationSerializer.render(
-      publications,
-      root: :publications,
-      view: :with_author_name
-    ), status: :ok
+    render_publications(publications, :ok)
   end
 
   def show
@@ -78,5 +74,24 @@ class V1::PublicationsController < ApplicationController
 
   def publication_params
     params.require(:publication).permit(:title, :body, :author_id)
+  end
+
+  def render_publications(publications, status)
+    render json: PublicationSerializer.render(
+      publications.then(&paginate),
+      root: :publications,
+      view: :with_author_name,
+      meta: meta(publications)
+    ), status:
+  end
+
+  def meta(publications)
+    {
+      # Converted to array do not query again
+      count: publications.to_a.count.to_s,
+      page: params[:page],
+      per_page: params[:per_page]
+
+    }
   end
 end
