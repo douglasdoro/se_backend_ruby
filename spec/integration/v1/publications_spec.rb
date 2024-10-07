@@ -74,6 +74,13 @@ RSpec.describe 'V1::PublicationsController' do # rubocop:disable RSpec/MultipleM
 
     let(:pub) { create(:publication, :published, author:) }
 
+    before do
+      # rubocop:disable RSpec/AnyInstance
+      allow_any_instance_of(EmailService).to receive(:send_message)
+      allow_any_instance_of(WhatsappService).to receive(:send_message)
+      # rubocop:enable RSpec/AnyInstance
+    end
+
     get 'Retrieves a specific publication' do
       tags 'Publications'
       produces 'application/json'

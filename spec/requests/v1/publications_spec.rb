@@ -60,6 +60,13 @@ RSpec.describe 'V1::PublicationsController' do
   end
 
   describe 'PUT /v1/publications/:id' do
+    before do
+      # rubocop:disable RSpec/AnyInstance
+      allow_any_instance_of(EmailService).to receive(:send_message)
+      allow_any_instance_of(WhatsappService).to receive(:send_message)
+      # rubocop:enable RSpec/AnyInstance
+    end
+
     context 'with valid parameters' do
       it 'updates the publication' do
         patch v1_publication_path(publication.id), params: publication_params
