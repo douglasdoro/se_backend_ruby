@@ -2,17 +2,18 @@
 
 echo "---Run Migrations---"
 # If running the rails server then create or migrate existing database
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+# if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+if [ "${1}" == "bundle" ] && [ "${2}" == "exec" ]; then
   ./bin/rails db:prepare
 fi
 
 echo "---Remove PID---"
 rm -f /rails/tmp/pids/server.pid
 
-echo "---Install Foreman---"
-if ! gem list foreman -i --silent; then
-  echo "Installing foreman..."
-  gem install foreman
-fi
+# echo "---Install Foreman---"
+# if ! gem list foreman -i --silent; then
+#   echo "Installing foreman..."
+#   gem install foreman
+# fi
 
 exec "${@}"

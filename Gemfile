@@ -13,9 +13,11 @@ gem 'redis-rails'
 # gem "kredis"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'bootsnap', require: false
+gem 'foreman'
 gem 'rack-cors'
 gem 'rswag-api'
 gem 'rswag-ui'
+gem 'sidekiq'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :development, :test do
