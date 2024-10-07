@@ -39,16 +39,16 @@ class V1::PublicationsController < ApplicationController
   end
 
   def create
-    @publication = @author.publications.new(publication_params)
+    save, publication = CreatePublication.new(@author, publication_params).save
 
-    if @publication.save
+    if save
       render json: PublicationSerializer.render(
-        @publication,
+        publication,
         root: :publication,
         view: :with_author_name
       ), status: :created
     else
-      render json: @publication.errors, status: :unprocessable_entity
+      render json: publication.errors, status: :unprocessable_entity
     end
   end
 

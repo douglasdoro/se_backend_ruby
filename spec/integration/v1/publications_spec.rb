@@ -10,6 +10,10 @@ RSpec.describe 'V1::PublicationsController' do # rubocop:disable RSpec/MultipleM
   path '/v1/publications' do
     before do
       create_list(:publication, 5, :published)
+      # rubocop:disable RSpec/AnyInstance
+      allow_any_instance_of(EmailService).to receive(:send_message)
+      allow_any_instance_of(WhatsappService).to receive(:send_message)
+      # rubocop:enable RSpec/AnyInstance
     end
 
     get 'Retrieves a list of published publications' do
