@@ -11,6 +11,7 @@ class UpdatePublication
     process_status
     assign_attributes
     update_cache
+    send_notification
 
     [@publication.save, @publication]
   end
@@ -36,5 +37,11 @@ class UpdatePublication
 
   def update_cache
     Rails.cache.delete("publication/#{@publication.id}")
+  end
+
+  def send_notification
+    services = [EmailService.new, WhatsappService.new]
+
+    NotificationService.new(@publication_id, :update, services).send
   end
 end
